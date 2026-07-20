@@ -14,7 +14,7 @@ void I2C_SOFT_Init(){
     __HAL_RCC_GPIOB_CLK_ENABLE();
     GPIO_InitStruct.Pin = I2C_SCL_Pin | I2C_SDA_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
-    GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
     HAL_GPIO_Init(I2C_GPIO_Port, &GPIO_InitStruct);
 }
@@ -31,7 +31,7 @@ void I2C_Stop(){
 }
 void I2C_SendByte(uint8_t Byte){
     for(int i=0; i<8; i++){
-        I2C_SOFT_W_SDA((Byte & 0x80) >> i);
+        I2C_SOFT_W_SDA( (Byte >> (7 - i)) & 0x01 );
         I2C_SOFT_W_SCL(1);
         I2C_SOFT_W_SCL(0);
     }

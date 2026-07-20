@@ -21,7 +21,7 @@ void MYFLASH_Erase(uint32_t Address,uint8_t Number){
     EraseInstructure.PageAddress=Address;//擦除页的首地址
     EraseInstructure.TypeErase=FLASH_TYPEERASE_PAGES;//擦除类型--只能按页擦除
     if(HAL_FLASHEx_Erase(&EraseInstructure,&PageError)!=HAL_OK)
-    while(1);
+        while(1);
     HAL_FLASH_Lock();
 }
 
@@ -29,6 +29,6 @@ void MYFLASH_Erase(uint32_t Address,uint8_t Number){
 void MYFLASH_WriteWord(uint32_t Address,uint32_t Word){
     HAL_FLASH_Unlock();
     if(HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD,Address,Word)!=HAL_OK)
-    while(1);
+        while(1);
     HAL_FLASH_Lock();
 }

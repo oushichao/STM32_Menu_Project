@@ -35,8 +35,10 @@ void Led_Contrast_Dec_Set(){
     }
     Menu_Led_Brightness_Draw(Current_Menu);
 }
-void Led_Flash_Load(){
-    Flash_Load(LED_Load_Address_Head,LED_Data,2);
+void Led_Flash_Load(void) {
+    LED_Data[0] = MAGIC_WORD;
+    LED_Data[1] = LED_Pulse;
+    Flash_Load(LED_Load_Address_Head, LED_Data, 2);
 }
 void Menu_Led_Brightness_Draw(Menu*m){
     for(uint8_t i = 0; i < 10; i++) {
@@ -53,7 +55,7 @@ void Buzzer_Turn_On(){
     PWM_Buzzer_Start();
 }
 void Buzzer_Turn_Off(){
-    PWM_Led_Stop();
+    PWM_Buzzer_Stop();
 }
 void Buzzer_Frequency_Add_Set(){
     if(BUZZER_Frequency<=4800)
@@ -74,8 +76,10 @@ void Buzzer_Frequency_Dec_Set(){
     }   
     Menu_Buzzer_Frequency_Draw(Current_Menu); 
 }
-void Buzzer_Flash_Load(){
-    Flash_Load(BUZZER_Load_Address_Head,LED_Data,2);
+void Buzzer_Flash_Load(void) {
+    BUZZER_Data[0] = MAGIC_WORD;
+    BUZZER_Data[1] = BUZZER_Frequency; 
+    Flash_Load(BUZZER_Load_Address_Head, BUZZER_Data, 2);
 }
 void Menu_Buzzer_Frequency_Draw(){
     OLED_ShowNum(1,8,BUZZER_Frequency,4);
@@ -187,9 +191,8 @@ void Menu_Key_Handler(uint8_t key){//菜单选项控制
         }
     }
 }
+
 void Flash_Load(uint32_t Address,uint8_t*Data,uint8_t Count){
-    Data[0]=MAGIC_WORD;
-    Data[1]=LED_Pulse;
     while(W25Q64_Soft_SPI_SectorErase(Address)!=0);
     while(W25Q64_Soft_SPI_PageProgram(Address,Data,Count)!=0);
     W25Q64_Soft_SPI_ReadData(Address,LED_Data,Count);

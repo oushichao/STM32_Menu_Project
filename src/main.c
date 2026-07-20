@@ -6,8 +6,7 @@
 #include "W25Q64_Soft_SPI.h"
 #include "menu_items.h"
 // 前置函数声明
-   void SystemClock_Config(void);
-
+void SystemClock_Config(void);
 
 int main(void)
 {
